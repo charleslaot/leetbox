@@ -36,6 +36,7 @@ app.use((err, req, res, next) => {
 // SERVER
 (async () => {
 	try {
+		// DB connection here
 		app.listen(process.env.APP_PORT, () => {
 			console.log("=== Server running on port " + process.env.APP_PORT + " ===");
 		});
