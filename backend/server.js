@@ -7,6 +7,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const express = require("express");
 const cookieParser = require("cookie-parser");
+const { MongoClient, ServerApiVersion } = require("mongodb");
 
 const app = express();
 const appRouter = require("./routes");
@@ -32,14 +33,28 @@ app.use((err, req, res, next) => {
 	res.status(500).json({ message: "500 Internal server error." });
 });
 
+//DB
+const client = new MongoClient(process.env.MONGODB_URI, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+
 // SERVER
 (async () => {
 	try {
-		// DB connection here
+		await client.connect();
+		await client.db("admin").command({ ping: 1 });
+		console.log("\n=== You successfully connected to MongoDB ===");
+
 		app.listen(process.env.APP_PORT, () => {
-			console.log("=== Server running on port " + process.env.APP_PORT + " ===");
+			console.log("\n=== Server running on port " + process.env.APP_PORT + " ===\n");
 		});
 	} catch (error) {
 		console.error("\nServer error:", error);
+	} finally {
+		await client.close();
 	}
 })();
