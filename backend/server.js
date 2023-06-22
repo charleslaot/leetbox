@@ -11,7 +11,6 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const appRouter = require("./routes");
 
-
 // MIDDLEWARE
 const corsOptions = {
     credentials: true,
