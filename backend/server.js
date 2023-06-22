@@ -17,6 +17,7 @@ const corsOptions = {
     credentials: true,
 	origin: process.env.CORS_ORIGIN,
 };
+
 app.use(cors(corsOptions));
 app.use(morgan("dev"));
 app.use(express.json());
